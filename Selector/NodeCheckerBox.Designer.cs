@@ -58,12 +58,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.StatusLabel);
             this.Controls.Add(this.Checker);
             this.Margin = new System.Windows.Forms.Padding(22, 4, 22, 4);
             this.MinimumSize = new System.Drawing.Size(200, 22);
             this.Name = "NodeCheckerBox";
-            this.Size = new System.Drawing.Size(250, 22);
+            this.Size = new System.Drawing.Size(248, 20);
             this.Click += new System.EventHandler(this.OnClick);
             this.ResumeLayout(false);
             this.PerformLayout();
