@@ -28,24 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.nodeCollectionBox1 = new Updater.Configurator.NodeCollectionBox();
+            this.configuratorMenu1 = new Updater.Configurator.ConfiguratorMenu();
             this.SuspendLayout();
             // 
-            // nodeCollectionBox1
+            // configuratorMenu1
             // 
-            this.nodeCollectionBox1.AutoScroll = true;
-            this.nodeCollectionBox1.Location = new System.Drawing.Point(137, 54);
-            this.nodeCollectionBox1.Margin = new System.Windows.Forms.Padding(22, 4, 22, 4);
-            this.nodeCollectionBox1.Name = "nodeCollectionBox1";
-            this.nodeCollectionBox1.Size = new System.Drawing.Size(468, 343);
-            this.nodeCollectionBox1.TabIndex = 0;
+            this.configuratorMenu1.Location = new System.Drawing.Point(12, 12);
+            this.configuratorMenu1.MinimumSize = new System.Drawing.Size(476, 188);
+            this.configuratorMenu1.Name = "configuratorMenu1";
+            this.configuratorMenu1.Size = new System.Drawing.Size(776, 426);
+            this.configuratorMenu1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.nodeCollectionBox1);
+            this.Controls.Add(this.configuratorMenu1);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -54,7 +53,7 @@
 
         #endregion
 
-        private Configurator.NodeCollectionBox nodeCollectionBox1;
+        private Configurator.ConfiguratorMenu configuratorMenu1;
     }
 }
 

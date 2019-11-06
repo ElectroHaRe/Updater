@@ -9,7 +9,6 @@ namespace Updater.Configurator
         {
             InitializeComponent();
         }
-
         public event EventHandler DownArrowClick
         {
             add => DownArrow.Click += value;
@@ -34,22 +33,22 @@ namespace Updater.Configurator
             set => DestinationPathLabel.Text = value;
         }
 
-        public string Description 
-        { 
-            get => DescriptionField.Text; 
-            set => DescriptionField.Text = value; 
+        public string Description
+        {
+            get => DescriptionField.Text;
+            set => DescriptionField.Text = value;
         }
 
-        public string Source 
-        { 
+        public string Source
+        {
             get => SourcePathField.Text;
-            set => SourcePathField.Text = value; 
+            set => SourcePathField.Text = value;
         }
 
-        public string Destination 
-        { 
-            get => DestinationPathField.Text; 
-            set => DestinationPathField.Text = value; 
+        public string Destination
+        {
+            get => DestinationPathField.Text;
+            set => DestinationPathField.Text = value;
         }
 
         private void OnSizeChanged(object sender, EventArgs e)

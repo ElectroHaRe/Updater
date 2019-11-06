@@ -48,6 +48,13 @@
   <ItemGroup>
     <Compile Include="Base\DirectoryExtension.cs" />
     <Compile Include="Base\IPathNode.cs" />
+    <Compile Include="Base\PathNode.cs" />
+    <Compile Include="Configurator\ConfiguratorMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Configurator\ConfiguratorMenu.Designer.cs">
+      <DependentUpon>ConfiguratorMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configurator\NodeBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -80,6 +87,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Configurator\ConfiguratorMenu.resx">
+      <DependentUpon>ConfiguratorMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Configurator\NodeBox.resx">
       <DependentUpon>NodeBox.cs</DependentUpon>
     </EmbeddedResource>
