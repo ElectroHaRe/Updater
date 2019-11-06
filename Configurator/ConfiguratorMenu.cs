@@ -31,7 +31,7 @@ namespace Updater.Configurator
 
             foreach (var item in nodeCollection)
             {
-                if (item.Source == string.Empty && item.Destination == string.Empty && item.Description == string.Empty)
+                if (item.Source != string.Empty || item.Destination != string.Empty || item.Description != string.Empty)
                     pathList.Add(new PathNode(item.Description, item.Source, item.Destination));
             }
 
@@ -57,6 +57,7 @@ namespace Updater.Configurator
                 pathList = serializer.Deserialize(stream) as List<PathNode>;
             }
 
+            nodeCollectionBox.Clear();
             nodeCollectionBox.AddPathNodeList(pathList);
 
             return nodeCollectionBox.GetPathNodeList();
