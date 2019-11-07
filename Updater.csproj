@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Base\DirectoryExtension.cs" />
     <Compile Include="Base\IPathNode.cs" />
+    <Compile Include="Base\PathNodeSerializer.cs" />
     <Compile Include="Base\PathNode.cs" />
     <Compile Include="Configurator\ConfiguratorMenu.cs">
       <SubType>UserControl</SubType>
@@ -144,6 +145,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UpdaterMenu\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

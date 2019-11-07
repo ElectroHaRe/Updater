@@ -49,6 +49,7 @@
             this.configuratorMenu1.Name = "configuratorMenu1";
             this.configuratorMenu1.Size = new System.Drawing.Size(776, 300);
             this.configuratorMenu1.TabIndex = 1;
+            this.configuratorMenu1.OnSaveClick += new System.EventHandler(this.OnSaveClick);
             // 
             // Form1
             // 

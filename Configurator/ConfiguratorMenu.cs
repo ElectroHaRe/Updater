@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using Updater.Base;
 using System.Windows.Forms;
-using System.Xml.Serialization;
 using System.Collections.Generic;
 
 namespace Updater.Configurator
@@ -12,60 +10,38 @@ namespace Updater.Configurator
         public ConfiguratorMenu()
         {
             InitializeComponent();
-            LoadConfig();
         }
 
+        public event EventHandler OnSaveClick
+        {
+            add => SaveButton.Click += value;
+            remove => SaveButton.Click -= value;
+        }
         public event EventHandler OnBackClick
         {
             add => BackButton.Click += value;
             remove => BackButton.Click -= value;
         }
 
-        private readonly string ConfigPath = @".\Config.xml";
-
-        public void SaveConfig()
+        public bool SetPathNodeList<T>(List<T> nodes) where T : IPathNode 
         {
-            var nodeCollection = nodeCollectionBox.GetPathNodeList();
-
-            List<PathNode> pathList = new List<PathNode>();
-
-            foreach (var item in nodeCollection)
-            {
-                if (item.Source != string.Empty || item.Destination != string.Empty || item.Description != string.Empty)
-                    pathList.Add(new PathNode(item.Description, item.Source, item.Destination));
-            }
-
-            XmlSerializer serializer = new XmlSerializer(pathList.GetType());
-
-            using (var stream = new FileStream(ConfigPath, FileMode.Create))
-            {
-                serializer.Serialize(stream, pathList);
-            }
+            return SetPathNodeList(nodes.AsReadOnly());
         }
 
-        public System.Collections.ObjectModel.ReadOnlyCollection<IPathNode> LoadConfig()
+        public bool SetPathNodeList<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> nodes) where T : IPathNode
         {
-            if (!File.Exists(ConfigPath))
-                return new List<IPathNode>().AsReadOnly();
-
-            List<PathNode> pathList = new List<PathNode>();
-
-            XmlSerializer serializer = new XmlSerializer(pathList.GetType());
-
-            using (var stream = new FileStream(ConfigPath, FileMode.Open))
-            {
-                pathList = serializer.Deserialize(stream) as List<PathNode>;
-            }
+            if (nodes == null)
+                return false;
 
             nodeCollectionBox.Clear();
-            nodeCollectionBox.AddPathNodeList(pathList);
+            nodeCollectionBox.AddPathNodeList(nodes);
 
-            return nodeCollectionBox.GetPathNodeList();
+            return true;
         }
 
-        private void SaveButton_Click(object sender, EventArgs e)
+        public System.Collections.ObjectModel.ReadOnlyCollection<IPathNode> GetPathNodeList() 
         {
-            SaveConfig();
+            return nodeCollectionBox.GetPathNodeList();
         }
 
         private void ConfiguratorMenu_SizeChanged(object sender, EventArgs e)

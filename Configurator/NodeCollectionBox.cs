@@ -166,6 +166,11 @@ namespace Updater.Configurator
 
         public void AddPathNodeList<T>(List<T> nodes) where T : IPathNode
         {
+            AddPathNodeList(nodes.AsReadOnly());
+        }
+
+        public void AddPathNodeList<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> nodes) where T : IPathNode
+        {
             foreach (var item in nodes)
             {
                 AddPathNode(item);
