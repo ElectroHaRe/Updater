@@ -16,29 +16,29 @@ namespace Updater.Configurator
             remove => UpArrow.Click -= value;
         }
 
-        public string Description 
-        { 
-            get => DescriptionField.Text; 
-            set => DescriptionField.Text = value; 
-        }
-
-        public string Source 
-        { 
-            get => SourcePathBox.Path; 
-            set => SourcePathBox.Path = value; 
-        }
-
-        public string Destination 
+        public string Description
         {
-            get => DestinationPathBox.Path; 
-            set => DestinationPathBox.Path = value; 
+            get => DescriptionField.Text;
+            set => DescriptionField.Text = value ?? string.Empty;
+        }
+
+        public string Source
+        {
+            get => SourcePathBox.Path;
+            set => SourcePathBox.Path = value ?? string.Empty;
+        }
+
+        public string Destination
+        {
+            get => DestinationPathBox.Path;
+            set => DestinationPathBox.Path = value ?? string.Empty;
         }
 
         private void OnSizeChanged(object sender, EventArgs e)
         {
             DescriptionField.Left = DescriptionLabel.Left = DescriptionField.Margin.Left;
             UpArrow.Left = Width - UpArrow.Margin.Right - UpArrow.Width;
-            DescriptionField.Width = UpArrow.Left - UpArrow.Margin.Left - DescriptionField.Margin.Left;
+            DescriptionField.Width = UpArrow.Left - UpArrow.Margin.Left - DescriptionField.Margin.Left - DescriptionField.Margin.Right;
 
             SourcePathBox.Width = DestinationPathBox.Width = Width;
         }

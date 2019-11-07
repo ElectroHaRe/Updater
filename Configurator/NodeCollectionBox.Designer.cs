@@ -54,7 +54,7 @@
             this.VScrollBar.Name = "VScrollBar";
             this.VScrollBar.Size = new System.Drawing.Size(17, 343);
             this.VScrollBar.TabIndex = 3;
-            this.VScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.VScrollBar_Scroll);
+            this.VScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.OnScrollBarValueChanged);
             // 
             // RemoveButton
             // 

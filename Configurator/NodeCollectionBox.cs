@@ -12,103 +12,156 @@ namespace Updater.Configurator
         public NodeCollectionBox()
         {
             InitializeComponent();
-            RecalculateScroll();
         }
 
         List<IPathNode> Nodes = new List<IPathNode>();
 
-        private void RemoveNode(IPathNode node)
+        private bool RemoveNode(IPathNode node)
         {
+            int index = Nodes.IndexOf(node);
+
+            if (index == -1)
+                return false;
+
             Nodes.Remove(node);
             Controls.Remove(node as Control);
-            RecalculateTop();
+            RecalculateTopCountFrom(index);
             RecalculateScroll();
-        }
-
-        private void RecalculateTop()
-        {
-            for (int i = 0; i < Nodes.Count; i++)
-            {
-                Control last = Nodes.Count > 1 && i > 0 ? Nodes[i - 1] as Control : null;
-                Control current = Nodes[i] as Control;
-
-                current.Top = last == null ? current.Margin.Top : last.Bottom + last.Margin.Bottom + current.Margin.Top;
-            }
-
-            AddButton.Top = RemoveButton.Top = Nodes.Count == 0 ? AddButton.Margin.Top : (Nodes[Nodes.Count - 1] as Control).Top + (Nodes[Nodes.Count - 1] as Control).Height
-                + (Nodes[Nodes.Count - 1] as Control).Margin.Bottom + AddButton.Margin.Top;
-        }
-
-        private void RecalculateScroll()
-        {
-            RecalculateTop();
-
-            int value = 0;
-            float factor = 0;
-            if (VScrollBar.Maximum != VScrollBar.Minimum)
-                factor = (float)VScrollBar.Value / VScrollBar.Maximum;
-
-            VScrollBar.Maximum = Nodes.Count == 0 ? 0 : AddButton.Top + AddButton.Height + AddButton.Margin.Bottom;
-
-            if (VScrollBar.Maximum - VScrollBar.Minimum <= Height)
-                VScrollBar.Maximum = 0;
-            else
-                VScrollBar.Maximum -= (int)(Height * 0.9f);
-
-
-            value = (int)(VScrollBar.Maximum * factor);
-
-            if (value < VScrollBar.Maximum)
-            {
-                VScrollBar.Value = (int)(VScrollBar.Maximum * factor);
-
-                VScrollBar_Scroll(null, new ScrollEventArgs(ScrollEventType.ThumbPosition, value));
-            }
-        }
-
-        private NodeBox CreateNodeBox()
-        {
-            var nodeBox = new NodeBox();
-
-            nodeBox.Width = Width - nodeBox.Margin.Left - nodeBox.Margin.Right;
-            if (Nodes.Count > 0)
-            {
-                var lastBox = Nodes[Nodes.Count - 1] as Control;
-                nodeBox.Top = lastBox.Top + lastBox.Height + lastBox.Margin.Bottom + nodeBox.Margin.Top;
-                nodeBox.Left = lastBox.Left;
-            }
-            else
-            {
-                nodeBox.Top = nodeBox.Margin.Top;
-                nodeBox.Left = nodeBox.Margin.Left;
-            }
-
-            nodeBox.UpArrowClick += OnUpArrowClick;
-
-            Nodes.Add(nodeBox);
-            Controls.Add(nodeBox);
-
-            AddButton.Top = RemoveButton.Top = nodeBox.Top + nodeBox.Height + nodeBox.Margin.Bottom + AddButton.Margin.Top;
-
-            return nodeBox;
-        }
-
-        public bool AddPathNode(string sourcePath, string destinationPath, string description)
-        {
-            var nodeBox = CreateNodeBox();
-
-            nodeBox.Description = description;
-            nodeBox.Source = sourcePath;
-            nodeBox.Destination = destinationPath;
 
             return true;
         }
 
-        public bool AddPathNode(IPathNode pathNode)
+        private void RecalculateTop()
         {
-            var result = AddPathNode(pathNode.Source, pathNode.Destination, pathNode.Description);
+            RecalculateTopCountFrom(0);
+        }
+
+        private void RecalculateTopCountFrom(int index)
+        {
+            for (int i = index; i < Nodes.Count; i++)
+            {
+                Control current = Nodes[i] as Control;
+
+                if (i == 0)
+                {
+                    current.Top = current.Margin.Top;
+                    continue;
+                }
+
+                Control last = Nodes[i - 1] as Control;
+                current.Top = last.Bottom + last.Margin.Bottom + current.Margin.Top;
+            }
+
+            AddButton.Top = RemoveButton.Top = Nodes.Count == 0 ? AddButton.Margin.Top :
+                (Nodes[Nodes.Count - 1] as Control).Bottom + (Nodes[Nodes.Count - 1] as Control).Margin.Bottom + AddButton.Margin.Top;
+        }
+
+        private void RecalculateScroll()
+        {
+            float factor = VScrollBar.Maximum == 0 ? 0 : (float)VScrollBar.Value / VScrollBar.Maximum; // множитель отнасительной позиции Value
+
+            ChangeScrollPosition(0); // сбрасываем текущий скрол в 0
+
+            VScrollBar.Maximum = Nodes.Count == 0 ? 0 : AddButton.Top + AddButton.Height + AddButton.Margin.Bottom; // Пересчитываем максимум, минимум = 0
+
+            VScrollBar.Maximum = VScrollBar.Maximum > Height ? VScrollBar.Maximum - Height * 9 / 10 : 0; // Досчитываем максимум, учитывая высоту нашего бокса
+
+            ChangeScrollPosition((int)(VScrollBar.Maximum * factor)); // возращаем скрол в сохранённую позицию
+        }
+
+        private void ChangeScrollPosition(int newValue)
+        {
+            newValue = newValue < 0 ? 0 : newValue > VScrollBar.Maximum ? VScrollBar.Maximum : newValue;
+
+            OnScrollBarValueChanged(null, new ScrollEventArgs(ScrollEventType.ThumbPosition, VScrollBar.Value, newValue));
+            VScrollBar.Value = newValue;
+        }
+
+        /// <summary>
+        /// Заменяет NodeBox на NodePreviewBox и наоборот
+        /// </summary>
+        /// <param name="index">Индекс PathNode элемента в листе Nodes</param>
+        private void ChangePathNodeControlState(int index)
+        {
+            if (index < 0 && index >= Nodes.Count)
+                throw new IndexOutOfRangeException();
+
+            var lastPathNode = Nodes[index] as Control;
+
+            Control newPatnNode = lastPathNode is NodePreviewBox ? CreateNodeBox() as Control : CreateNodePreviewBox() as Control;
+
+            ReplaceControlForPathNode(Nodes[index], newPatnNode);
+
+            Controls.Remove(lastPathNode);
+            Controls.Add(newPatnNode);
+        }
+
+        private NodeBox CreateNodeBox()
+        {
+            var temp = new NodeBox();
+
+            temp.UpArrowClick += OnArrowClick;
+
+            return temp;
+        }
+
+        private NodePreviewBox CreateNodePreviewBox()
+        {
+            var temp = new NodePreviewBox();
+
+            temp.DownArrowClick += OnArrowClick;
+
+            return temp;
+        }
+
+        private void ReplaceControlForPathNode(IPathNode last, Control newControl)
+        {
+            if (!(newControl is IPathNode))
+                throw new ArgumentException("PathNode controls must be compatible with the IPathNode type.");
+
+            int index = Nodes.IndexOf(last);
+
+            if (index == -1)
+                throw new ArgumentException("Replaceable PathNode is not in the collection.");
+
+            (newControl as IPathNode).Source = last.Source ?? string.Empty;
+            (newControl as IPathNode).Destination = last.Destination ?? string.Empty;
+            (newControl as IPathNode).Description = last.Description ?? string.Empty;
+
+            newControl.Width = (last as Control).Width;
+            newControl.Left = (last as Control).Left;
+            newControl.Top = (last as Control).Top;
+
+            Nodes[index] = newControl as IPathNode;
+        }
+
+        public void AddPathNode(string sourcePath, string destinationPath, string description)
+        {
+            var nodeBox = CreateNodeBox();
+
+            nodeBox.Left = nodeBox.Margin.Left;
+            nodeBox.Width = Width - nodeBox.Left - nodeBox.Margin.Right;
+
+            if (Nodes.Count == 0)
+                RecalculateTop();
+            else nodeBox.Top = (Nodes[Nodes.Count - 1] as Control).Bottom + (Nodes[Nodes.Count - 1] as Control).Margin.Bottom + nodeBox.Margin.Top;
+
+            nodeBox.Description = description ?? string.Empty;
+            nodeBox.Source = sourcePath ?? string.Empty;
+            nodeBox.Destination = destinationPath ?? string.Empty;
+
+            RemoveButton.Top = AddButton.Top = nodeBox.Bottom + nodeBox.Margin.Bottom;
+
+            Nodes.Add(nodeBox);
+            Controls.Add(nodeBox);
+
+            RecalculateTopCountFrom(Nodes.Count - 1);
             RecalculateScroll();
-            return result;
+        }
+
+        public void AddPathNode(IPathNode pathNode)
+        {
+            AddPathNode(pathNode.Source, pathNode.Destination, pathNode.Description);
         }
 
         public void AddPathNodeList<T>(List<T> nodes) where T : IPathNode
@@ -127,6 +180,9 @@ namespace Updater.Configurator
             }
 
             Nodes.Clear();
+
+            RecalculateTop();
+            RecalculateScroll();
         }
 
         public System.Collections.ObjectModel.ReadOnlyCollection<IPathNode> GetPathNodeList()
@@ -138,101 +194,6 @@ namespace Updater.Configurator
         {
             AddPathNode("", "", "");
             RecalculateScroll();
-        }
-
-        private void OnMouseEnter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void OnMouseLeave(object sender, EventArgs e)
-        {
-
-        }
-
-        private void OnUpArrowClick(object sender, EventArgs e)
-        {
-            var temp = (sender as Control).Parent;
-
-            var preview = new NodePreviewBox();
-
-            preview.Source = (temp as IPathNode).Source ?? string.Empty;
-            preview.Destination = (temp as IPathNode).Destination ?? string.Empty;
-            preview.Description = (temp as IPathNode).Description ?? string.Empty;
-
-            preview.Width = temp.Width;
-            preview.Left = temp.Left;
-            preview.Top = temp.Top;
-
-            preview.DownArrowClick += OnDownArrowClick;
-
-            var delta = preview.Height - temp.Height;
-
-            var index = Nodes.IndexOf(temp as IPathNode);
-
-            AddButton.Top += delta;
-            RemoveButton.Top += delta;
-
-            Nodes[index] = preview;
-
-            Controls.Remove(temp);
-            Controls.Add(preview);
-
-            for (int i = index + 1; i < Nodes.Count; i++)
-            {
-                var last = Nodes[i - 1] as Control;
-                var current = Nodes[i] as Control;
-                current.Top = last.Top + last.Height + last.Margin.Bottom + current.Margin.Top;
-            }
-
-            RecalculateScroll();
-        }
-
-        private void OnDownArrowClick(object sender, EventArgs e)
-        {
-            var temp = (sender as Control).Parent;
-
-            var nodeBox = new NodeBox();
-
-            nodeBox.Source = (temp as IPathNode).Source ?? string.Empty;
-            nodeBox.Destination = (temp as IPathNode).Destination ?? string.Empty;
-            nodeBox.Description = (temp as IPathNode).Description ?? string.Empty;
-
-            nodeBox.Width = temp.Width;
-            nodeBox.Left = temp.Left;
-            nodeBox.Top = temp.Top;
-
-            nodeBox.UpArrowClick += OnUpArrowClick;
-
-            var delta = nodeBox.Height - temp.Height;
-
-            var index = Nodes.IndexOf(temp as IPathNode);
-
-            AddButton.Top += delta;
-            RemoveButton.Top += delta;
-
-            Nodes[index] = nodeBox;
-
-            Controls.Remove(temp);
-            Controls.Add(nodeBox);
-
-            for (int i = index + 1; i < Nodes.Count; i++)
-            {
-                (Nodes[i] as Control).Top += delta;
-            }
-
-            RecalculateScroll();
-        }
-
-        private void VScrollBar_Scroll(object sender, ScrollEventArgs e)
-        {
-            foreach (Control item in Nodes)
-            {
-                item.Top -= e.NewValue - e.OldValue;
-            }
-
-            AddButton.Top -= e.NewValue - e.OldValue;
-            RemoveButton.Top -= e.NewValue - e.OldValue;
         }
 
         private void OnAddButtonMouseEnter(object sender, EventArgs e)
@@ -259,6 +220,28 @@ namespace Updater.Configurator
         {
             if (Nodes.Count > 0)
                 RemoveNode(Nodes[Nodes.Count - 1]);
+        }
+
+        private void OnArrowClick(object sender, EventArgs e)
+        {
+            var temp = (sender as Control).Parent as IPathNode;
+            int index = Nodes.IndexOf(temp);
+
+            ChangePathNodeControlState(index);
+
+            RecalculateTopCountFrom(index + 1);
+            RecalculateScroll();
+        }
+
+        private void OnScrollBarValueChanged(object sender, ScrollEventArgs e)
+        {
+            foreach (Control item in Nodes)
+            {
+                item.Top -= e.NewValue - e.OldValue;
+            }
+
+            AddButton.Top -= e.NewValue - e.OldValue;
+            RemoveButton.Top -= e.NewValue - e.OldValue;
         }
 
         private void OnSizeChanged(object sender, EventArgs e)

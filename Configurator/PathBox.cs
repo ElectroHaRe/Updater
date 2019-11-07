@@ -13,13 +13,13 @@ namespace Updater.Configurator
         public string Label 
         {
             get => pathLabel.Text;
-            set => pathLabel.Text = value;
+            set => pathLabel.Text = value ?? string.Empty;
         }
 
         public string Path
         {
             get => pathField.Text;
-            set => pathField.Text = value;
+            set => pathField.Text = value ?? string.Empty;
         }
 
         private void OnChangePathClick(object sender, EventArgs e)
@@ -33,7 +33,7 @@ namespace Updater.Configurator
         private void OnSizeChanged(object sender, EventArgs e)
         {
             changePath.Left = Width - changePath.Margin.Right - changePath.Width;
-            pathField.Width = changePath.Left - pathField.Margin.Left - pathField.Margin.Right; 
+            pathField.Width = changePath.Left - pathField.Margin.Left - pathField.Margin.Right - changePath.Margin.Left; 
         }
     }
 }
