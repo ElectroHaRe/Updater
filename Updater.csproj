@@ -100,6 +100,12 @@
     <Compile Include="Selector\NodeCheckerCollectionBox.Designer.cs">
       <DependentUpon>NodeCheckerCollectionBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="UpdaterMenu\UpdateMenu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UpdaterMenu\UpdateMenu.Designer.cs">
+      <DependentUpon>UpdateMenu.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Configurator\ConfiguratorMenu.resx">
       <DependentUpon>ConfiguratorMenu.cs</DependentUpon>
     </EmbeddedResource>
@@ -133,6 +139,9 @@
     <EmbeddedResource Include="Selector\NodeCheckerCollectionBox.resx">
       <DependentUpon>NodeCheckerCollectionBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UpdaterMenu\UpdateMenu.resx">
+      <DependentUpon>UpdateMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -146,8 +155,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UpdaterMenu\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

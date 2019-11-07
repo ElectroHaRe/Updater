@@ -6,6 +6,8 @@ namespace Updater.Base
 {
     static class DirectoryExtension
     {
+        public static event Action FileCopyComplete;
+
         public static void CopyTo(this DirectoryInfo sourceDir, string destinationPath)
         {
             if (!sourceDir.Exists)
@@ -16,7 +18,7 @@ namespace Updater.Base
             if (!destinationDir.Exists)
                 destinationDir.Create();
 
-            destinationDir.CreateSubdirectory(sourceDir.Name);
+            destinationDir = destinationDir.CreateSubdirectory(sourceDir.Name);
 
             Parallel.ForEach<DirectoryInfo>(sourceDir.GetDirectories(), dir =>
             {
@@ -25,7 +27,8 @@ namespace Updater.Base
 
             Parallel.ForEach<FileInfo>(sourceDir.GetFiles(), file =>
             {
-                file.CopyTo(destinationDir.FullName);
+                file.CopyTo(destinationDir.FullName + @"\" + file.Name);
+                FileCopyComplete?.Invoke();
             });
         }
     }

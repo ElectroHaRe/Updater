@@ -13,6 +13,19 @@ namespace Updater.Selector
 
         private List<IPathNode> Nodes = new List<IPathNode>();
 
+        public System.Collections.ObjectModel.ReadOnlyCollection<IPathNode> GetCheckedNodes() 
+        {
+            List<IPathNode> temp = new List<IPathNode>();
+
+            foreach (NodeCheckerBox item in Nodes)
+            {
+                if (item.Checked)
+                    temp.Add(item as IPathNode);
+            }
+
+            return temp.AsReadOnly();
+        }
+
         public bool AddPathNode(string sourcePath, string destinationPath, string description)
         {
             Nodes.Add(new NodeCheckerBox(sourcePath, destinationPath, description));
@@ -51,6 +64,16 @@ namespace Updater.Selector
                 item.Left = item.Margin.Left;
                 item.Width = Width - item.Left - item.Margin.Right;
             }
+        }
+
+        public void Clear() 
+        {
+            foreach (Control item in Nodes)
+            {
+                Controls.Remove(item);
+            }
+
+            Nodes.Clear();
         }
     }
 }
