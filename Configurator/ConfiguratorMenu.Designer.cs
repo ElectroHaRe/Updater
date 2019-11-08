@@ -73,7 +73,7 @@
             this.MinimumSize = new System.Drawing.Size(476, 188);
             this.Name = "ConfiguratorMenu";
             this.Size = new System.Drawing.Size(476, 188);
-            this.SizeChanged += new System.EventHandler(this.ConfiguratorMenu_SizeChanged);
+            this.SizeChanged += new System.EventHandler(this.OnSizeChanged);
             this.ResumeLayout(false);
 
         }

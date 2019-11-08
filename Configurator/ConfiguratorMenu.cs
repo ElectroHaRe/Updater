@@ -23,7 +23,7 @@ namespace Updater.Configurator
             remove => BackButton.Click -= value;
         }
 
-        public bool SetPathNodeList<T>(List<T> nodes) where T : IPathNode 
+        public bool SetPathNodeList<T>(List<T> nodes) where T : IPathNode
         {
             return SetPathNodeList(nodes.AsReadOnly());
         }
@@ -39,12 +39,22 @@ namespace Updater.Configurator
             return true;
         }
 
-        public System.Collections.ObjectModel.ReadOnlyCollection<IPathNode> GetPathNodeList() 
+        public System.Collections.ObjectModel.ReadOnlyCollection<IPathNode> GetPathNodeList()
         {
-            return nodeCollectionBox.GetPathNodeList();
+            var nodes = new List<IPathNode>();
+
+            foreach (IPathNode item in nodeCollectionBox.GetPathNodeList())
+            {
+                if (item.Source == string.Empty && item.Description == string.Empty && item.Destination == string.Empty)
+                    continue;
+
+                nodes.Add(item);
+            }
+
+            return nodes.AsReadOnly();
         }
 
-        private void ConfiguratorMenu_SizeChanged(object sender, EventArgs e)
+        private void OnSizeChanged(object sender, EventArgs e)
         {
             SaveButton.Top = Height - SaveButton.Margin.Bottom - SaveButton.Height;
 

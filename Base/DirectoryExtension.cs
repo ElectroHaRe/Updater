@@ -8,6 +8,8 @@ namespace Updater.Base
     {
         public static event Action FileCopyComplete;
 
+        public static string currentFile = string.Empty;
+
         public static void CopyTo(this DirectoryInfo sourceDir, string destinationPath)
         {
             if (!sourceDir.Exists)
@@ -27,6 +29,7 @@ namespace Updater.Base
 
             Parallel.ForEach<FileInfo>(sourceDir.GetFiles(), file =>
             {
+                currentFile = file.Name;
                 file.CopyTo(destinationDir.FullName + @"\" + file.Name);
                 FileCopyComplete?.Invoke();
             });

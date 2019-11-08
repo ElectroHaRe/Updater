@@ -29,7 +29,9 @@
         private void InitializeComponent()
         {
             this.ProgressBox = new System.Windows.Forms.ProgressBar();
-            this.label1 = new System.Windows.Forms.Label();
+            this.progressLabel = new System.Windows.Forms.Label();
+            this.BackButton = new System.Windows.Forms.Button();
+            this.ExitButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ProgressBox
@@ -40,27 +42,52 @@
             this.ProgressBox.Size = new System.Drawing.Size(474, 23);
             this.ProgressBox.TabIndex = 0;
             // 
-            // label1
+            // progressLabel
             // 
-            this.label1.AutoEllipsis = true;
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "label1";
+            this.progressLabel.AutoEllipsis = true;
+            this.progressLabel.AutoSize = true;
+            this.progressLabel.Location = new System.Drawing.Point(3, 0);
+            this.progressLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.progressLabel.Name = "progressLabel";
+            this.progressLabel.Size = new System.Drawing.Size(16, 13);
+            this.progressLabel.TabIndex = 1;
+            this.progressLabel.Text = "...";
+            // 
+            // BackButton
+            // 
+            this.BackButton.Location = new System.Drawing.Point(4, 47);
+            this.BackButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 4);
+            this.BackButton.Name = "BackButton";
+            this.BackButton.Size = new System.Drawing.Size(75, 23);
+            this.BackButton.TabIndex = 2;
+            this.BackButton.Text = "<<";
+            this.BackButton.UseVisualStyleBackColor = true;
+            this.BackButton.Click += new System.EventHandler(this.OnButtonClick);
+            // 
+            // ExitButton
+            // 
+            this.ExitButton.Location = new System.Drawing.Point(403, 47);
+            this.ExitButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 4);
+            this.ExitButton.Name = "ExitButton";
+            this.ExitButton.Size = new System.Drawing.Size(75, 23);
+            this.ExitButton.TabIndex = 3;
+            this.ExitButton.Text = "Exit";
+            this.ExitButton.UseVisualStyleBackColor = true;
+            this.ExitButton.Click += new System.EventHandler(this.OnButtonClick);
             // 
             // UpdateMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.ExitButton);
+            this.Controls.Add(this.BackButton);
+            this.Controls.Add(this.progressLabel);
             this.Controls.Add(this.ProgressBox);
-            this.MaximumSize = new System.Drawing.Size(482, 44);
-            this.MinimumSize = new System.Drawing.Size(482, 44);
+            this.MaximumSize = new System.Drawing.Size(60000, 74);
+            this.MinimumSize = new System.Drawing.Size(180, 74);
             this.Name = "UpdateMenu";
-            this.Size = new System.Drawing.Size(482, 44);
+            this.Size = new System.Drawing.Size(482, 74);
+            this.SizeChanged += new System.EventHandler(this.OnSizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -69,6 +96,8 @@
         #endregion
 
         private System.Windows.Forms.ProgressBar ProgressBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label progressLabel;
+        private System.Windows.Forms.Button BackButton;
+        private System.Windows.Forms.Button ExitButton;
     }
 }

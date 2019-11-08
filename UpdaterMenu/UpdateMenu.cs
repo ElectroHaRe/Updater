@@ -14,29 +14,74 @@ namespace Updater.UpdaterMenu
             InitializeComponent();
             DirectoryExtension.FileCopyComplete += OnFileCopyComplete;
             updater.Tick += OnTick;
-            updater.Interval = 1;
+            updater.Interval = 10;
         }
-
-        public event Action OnComplete;
-
-        private List<IPathNode> nodes = new List<IPathNode>();
 
         private int FilesCount = 0;
         private int counter = 0;
 
-        private Timer updater = new Timer();
-
-        private void OnFileCopyComplete()
+        public event EventHandler OnBackClick
         {
-            counter++;
+            add => BackButton.Click += value;
+            remove => BackButton.Click -= value;
         }
 
-        private void OnTick(object sender, EventArgs e)
+        public event EventHandler OnExitClick
         {
-            if (FilesCount != ProgressBox.Maximum)
-                ProgressBox.Maximum = FilesCount;
-            ProgressBox.Value = counter < ProgressBox.Maximum? counter : ProgressBox.Maximum;
-            label1.Text = ((float)ProgressBox.Value * 100 / ProgressBox.Maximum).ToString();
+            add => ExitButton.Click += value;
+            remove => ExitButton.Click -= value;
+        }
+
+        private List<IPathNode> nodes = new List<IPathNode>();
+
+        private Timer updater = new Timer();
+
+        public async void Start()
+        {
+            BackButton.Enabled = ExitButton.Enabled = false;
+
+            progressLabel.Text = "Calculation in progress";
+
+            Parallel.Invoke(CalculateFilesCount, ResolveConflictsForNodes);
+
+            ProgressBox.Maximum = FilesCount;
+
+            updater.Start();
+
+            await Task.Run(StartCopy);
+
+            updater.Stop();
+
+            progressLabel.Text = "Update completed!";
+            ProgressBox.Value = ProgressBox.Maximum;
+
+            BackButton.Enabled = ExitButton.Enabled = true;
+        }
+
+        public void SetPathNodeList<T>(List<T> nodes) where T : IPathNode
+        {
+            SetPathNodeList(nodes.AsReadOnly());
+        }
+
+        public void SetPathNodeList<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> nodes) where T : IPathNode
+        {
+            foreach (var item in nodes)
+            {
+                this.nodes.Add(item);
+            }
+        }
+
+        public void AddPathNode<T>(T node) where T : IPathNode
+        {
+            nodes.Add(node);
+        }
+
+        public void Clear()
+        {
+            nodes.Clear();
+            FilesCount = counter = 0;
+            ProgressBox.Value = 0;
+            ProgressBox.Maximum = 100;
         }
 
         private int GetFilesCountByDirectoryPath(string path)
@@ -68,26 +113,32 @@ namespace Updater.UpdaterMenu
             FilesCount = counter;
         }
 
-        private void CheckNodes()
+        private void ResolveConflictsForNodes()
         {
-            string tempPath = string.Empty;
-            string dateTime = "Obsolete_" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + "_" +
+            string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + "_" +
                 DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
 
             foreach (IPathNode node in nodes)
             {
-                tempPath = Path.Combine(node.Destination, Path.GetFileNameWithoutExtension(node.Source + ".folder"));
+                string conflictPath = Path.Combine(node.Destination, Path.GetFileNameWithoutExtension(node.Source + ".folder"));
+                string finalFolder = string.Empty;
 
-                if (Directory.Exists(tempPath))
+                if (Directory.Exists(conflictPath))
                 {
-                    Directory.Move(tempPath, Path.Combine(node.Destination, dateTime));
+                    finalFolder = Path.GetFileNameWithoutExtension(node.Source + "_" + dateTime + ".folder");
+
+                    Directory.CreateDirectory(Path.Combine(node.Destination, "Obsolete"));
+
+                    finalFolder = Path.Combine(node.Destination, "Obsolete", finalFolder);
+                    Directory.Move(conflictPath, finalFolder);
                 }
             }
+
         }
 
         private void StartCopy()
         {
-            CheckNodes();
+            ResolveConflictsForNodes();
 
             Parallel.ForEach(nodes, node =>
             {
@@ -95,48 +146,36 @@ namespace Updater.UpdaterMenu
             });
         }
 
-        public void SetPathNodeList<T>(List<T> nodes) where T : IPathNode
+        private void OnFileCopyComplete()
         {
-            SetPathNodeList(nodes.AsReadOnly());
+            counter++;
         }
 
-        public void SetPathNodeList<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> nodes) where T : IPathNode
+        private void OnTick(object sender, EventArgs e)
         {
-            foreach (var item in nodes)
-            {
-                this.nodes.Add(item);
-            }
+            ProgressBox.Value = counter < ProgressBox.Maximum ? counter : ProgressBox.Maximum;
+            progressLabel.Text = DirectoryExtension.currentFile;
         }
 
-        public void AddPathNode<T>(T node) where T : IPathNode
+        private void OnButtonClick(object sender, EventArgs e)
         {
-            nodes.Add(node);
-        }
-
-        public async void Start()
-        {
-            counter = FilesCount = 0;
-            ProgressBox.Maximum = 100;
-
-            updater.Start();
-
-            await Task.Run(CalculateFilesCount);
-            await Task.Run(StartCopy);
-
-            OnTick(null, null);
-            updater.Stop();
-
             Clear();
-
-            if (MessageBox.Show("Complete") == DialogResult.OK)
-                OnComplete?.Invoke();
         }
 
-        public void Clear()
+        private void OnSizeChanged(object sender, EventArgs e)
         {
-            nodes.Clear();
-            FilesCount = 0;
-            counter = 0;
+            progressLabel.Left = progressLabel.Margin.Left;
+            progressLabel.Top = progressLabel.Margin.Top;
+
+            ProgressBox.Left = ProgressBox.Margin.Left;
+            ProgressBox.Top = progressLabel.Bottom + progressLabel.Margin.Bottom + ProgressBox.Margin.Top;
+            ProgressBox.Width = Width - ProgressBox.Left - ProgressBox.Margin.Right;
+
+            BackButton.Left = ProgressBox.Left;
+            BackButton.Top = ProgressBox.Bottom + ProgressBox.Margin.Bottom + BackButton.Margin.Top;
+
+            ExitButton.Left = ProgressBox.Right - ExitButton.Width;
+            ExitButton.Top = BackButton.Top;
         }
     }
 }

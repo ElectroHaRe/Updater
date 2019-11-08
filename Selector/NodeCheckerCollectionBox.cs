@@ -47,7 +47,7 @@ namespace Updater.Selector
             return AddPathNode(pathNode.Source, pathNode.Destination, pathNode.Description);
         }
 
-        public bool AddPathNodeList<T>(List<T> nodes) where T : IPathNode
+        public bool AddPathNodeList<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> nodes) where T : IPathNode
         {
             foreach (var item in nodes)
             {
@@ -55,6 +55,11 @@ namespace Updater.Selector
             }
 
             return true;
+        }
+
+        public bool AddPathNodeList<T>(List<T> nodes) where T : IPathNode
+        {
+            return AddPathNodeList(nodes.AsReadOnly());
         }
 
         private void NodeCheckerCollectionBox_SizeChanged(object sender, System.EventArgs e)
