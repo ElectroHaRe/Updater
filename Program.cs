@@ -14,6 +14,7 @@ namespace Updater
         [STAThread]
         static void Main()
         {
+            //new comment
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
