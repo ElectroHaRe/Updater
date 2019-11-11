@@ -154,7 +154,8 @@ namespace Updater.UpdaterMenu
         private void OnTick(object sender, EventArgs e)
         {
             ProgressBox.Value = counter < ProgressBox.Maximum ? counter : ProgressBox.Maximum;
-            progressLabel.Text = DirectoryInfoExtension.CopiedFile;
+            if (DirectoryInfoExtension.CopiedFiles.Count > 0)
+                progressLabel.Text = DirectoryInfoExtension.CopiedFiles[DirectoryInfoExtension.CopiedFiles.Count - 1];
         }
 
         private void OnButtonClick(object sender, EventArgs e)
