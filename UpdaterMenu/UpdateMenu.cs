@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace Updater.UpdaterMenu
 {
+    //Класс элемента управления, представляющего собой меню Updat'а (или копирования файлов)
     public partial class UpdateMenu : UserControl
     {
         public UpdateMenu()
@@ -17,15 +18,20 @@ namespace Updater.UpdaterMenu
             updater.Interval = 10;
         }
 
+        //Переменая, хранящая значение полного количесва файлов в source дирректориях
         private int FilesCount = 0;
+        
+        //переменная, хранящая значение текущего количества скопированных файлов
         private int counter = 0;
 
+        //Событие клика на кнопку Back
         public event EventHandler OnBackClick
         {
             add => BackButton.Click += value;
             remove => BackButton.Click -= value;
         }
 
+        //Событие клика на кнопку Exit
         public event EventHandler OnExitClick
         {
             add => ExitButton.Click += value;
@@ -34,30 +40,47 @@ namespace Updater.UpdaterMenu
 
         private List<IPathNode> nodes = new List<IPathNode>();
 
+        //Timer для регулярного обновления шкалы прогресса
         private Timer updater = new Timer();
 
+        //Асинхронный метод стартаоперации копирования
         public async void Start()
         {
+            //Отключаем кнопки грубого прерывания приложения
+            FindForm().ControlBox = false;
+            //Отключаем кнопку назад и Exit
             BackButton.Enabled = ExitButton.Enabled = false;
 
+            //Сообщаем пользователю что надо посчитать
             progressLabel.Text = "Calculation in progress";
 
+            //Запускаем параллельно функцию разрешения конфликтов и подсчёта количества файлов
             Parallel.Invoke(CalculateFilesCount, ResolveConflictsForNodes);
 
+            //включаем кнопки грубого прерывания работы приложения
+            FindForm().ControlBox = true;
+
+            //записываем количество файлов
             ProgressBox.Maximum = FilesCount;
 
+            //запускаем таймер для обновления значений прогресс бара
             updater.Start();
 
+            //Запускаем процесс копирования
             await Task.Run(StartCopy);
 
+            //Останавливаем таймер (прекращаем Update прогресс бара)
             updater.Stop();
 
+            //Сообщаем пользователю что мы закончили
             progressLabel.Text = "Update completed!";
             ProgressBox.Value = ProgressBox.Maximum;
 
+            //Включаем кнопки меню
             BackButton.Enabled = ExitButton.Enabled = true;
         }
 
+        //Функция задания листа IPathNode
         public void SetPathNodeList<T>(List<T> nodes) where T : IPathNode
         {
             SetPathNodeList(nodes.AsReadOnly());
@@ -71,11 +94,13 @@ namespace Updater.UpdaterMenu
             }
         }
 
+        //Функция добавления одного IPathNode
         public void AddPathNode<T>(T node) where T : IPathNode
         {
             nodes.Add(node);
         }
 
+        //Функция сброса самого элемента управления
         public void Clear()
         {
             nodes.Clear();
@@ -84,23 +109,30 @@ namespace Updater.UpdaterMenu
             ProgressBox.Maximum = 100;
         }
 
+        //Функция, которая возвращает количество файлов в директории и всех поддиректориях
         private int GetFilesCountByDirectoryPath(string path)
         {
+            //инициализация экземпляра ООП представления директории по переданному пути
             var dir = new DirectoryInfo(path);
 
+            //Если директории не существует, то файлов в ней 0
             if (!dir.Exists)
                 return 0;
 
+            //получаем количество файлов в директории
             int count = dir.GetFiles().Length;
 
+            //Обходим все поддиректории и рекурсивно считаем все файлы
             foreach (var subDir in dir.GetDirectories())
             {
                 try { count += GetFilesCountByDirectoryPath(subDir.FullName); } catch { continue; }
             }
 
+            //Возвращаем общее количество файлов в директории и всех поддиректориях
             return count;
         }
 
+        //Функция, которая находит количество всех файлов во всех Source директориях и их поддиректориях
         private void CalculateFilesCount()
         {
             int counter = 0;
@@ -113,6 +145,7 @@ namespace Updater.UpdaterMenu
             FilesCount = counter;
         }
 
+        //Ищет папки с именем Source  в папке Destination и, если находит, запихивает их в резервную папку
         private void ResolveConflictsForNodes()
         {
             string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + "_" +
@@ -136,6 +169,7 @@ namespace Updater.UpdaterMenu
 
         }
 
+        //Метод логики самого копирования
         private void StartCopy()
         {
             ResolveConflictsForNodes();
@@ -146,11 +180,13 @@ namespace Updater.UpdaterMenu
             });
         }
 
+        //Обработчик события завершения копирования файла
         private void OnFileCopyComplete()
         {
             counter++;
         }
 
+        //Метод обработчик события обновления
         private void OnTick(object sender, EventArgs e)
         {
             ProgressBox.Value = counter < ProgressBox.Maximum ? counter : ProgressBox.Maximum;
@@ -158,11 +194,13 @@ namespace Updater.UpdaterMenu
                 progressLabel.Text = DirectoryInfoExtension.CopiedFiles[DirectoryInfoExtension.CopiedFiles.Count - 1];
         }
 
+        //Метод обработчик события нажатия кнопки (Любой)
         private void OnButtonClick(object sender, EventArgs e)
         {
             Clear();
         }
 
+        //Обработчик события изменения размера элемента управления
         private void OnSizeChanged(object sender, EventArgs e)
         {
             progressLabel.Left = progressLabel.Margin.Left;

@@ -45,7 +45,7 @@
             this.DescriptionLabel.Name = "DescriptionLabel";
             this.DescriptionLabel.Size = new System.Drawing.Size(128, 12);
             this.DescriptionLabel.TabIndex = 0;
-            this.DescriptionLabel.Text = "Description";
+            this.DescriptionLabel.Text = "Description \\ Описание";
             // 
             // DescriptionField
             // 
@@ -73,7 +73,7 @@
             this.SourcePathLabel.Name = "SourcePathLabel";
             this.SourcePathLabel.Size = new System.Drawing.Size(128, 12);
             this.SourcePathLabel.TabIndex = 5;
-            this.SourcePathLabel.Text = "Source";
+            this.SourcePathLabel.Text = "Source \\ Источник";
             // 
             // DestinationPathLabel
             // 
@@ -83,7 +83,7 @@
             this.DestinationPathLabel.Name = "DestinationPathLabel";
             this.DestinationPathLabel.Size = new System.Drawing.Size(128, 12);
             this.DestinationPathLabel.TabIndex = 7;
-            this.DestinationPathLabel.Text = "Destination";
+            this.DestinationPathLabel.Text = "Destination \\ Назначение";
             // 
             // DestinationPathField
             // 
@@ -94,7 +94,7 @@
             this.DestinationPathField.Size = new System.Drawing.Size(128, 20);
             this.DestinationPathField.TabIndex = 6;
             // 
-            // DownArrow
+            // ArrowButton
             // 
             this.ArrowButton.AutoSize = true;
             this.ArrowButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -102,7 +102,7 @@
             this.ArrowButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ArrowButton.Location = new System.Drawing.Point(400, 16);
             this.ArrowButton.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.ArrowButton.Name = "DownArrow";
+            this.ArrowButton.Name = "ArrowButton";
             this.ArrowButton.Size = new System.Drawing.Size(21, 20);
             this.ArrowButton.TabIndex = 8;
             this.ArrowButton.Text = "▼";

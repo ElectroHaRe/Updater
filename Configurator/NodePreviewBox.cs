@@ -23,21 +23,21 @@ namespace Updater.Configurator
         public string DescriptionLabelText
         {
             get => DescriptionLabel.Text;
-            set => DescriptionLabel.Text = value ?? string.Empty;
+            set => DescriptionLabel.Text = value;
         }
 
         //Свойство - обёртка, предоставляющее доступ к Лэйблу TextBox'a Source
         public string SourceLabelText
         {
             get => SourcePathLabel.Text;
-            set => SourcePathLabel.Text = value ?? string.Empty;
+            set => SourcePathLabel.Text = value;
         }
 
         //Свойство - обёртка, предоставляющее доступ к Лэйблу TextBox'a Destination
         public string DestinationLabelText
         {
             get => DestinationPathLabel.Text;
-            set => DestinationPathLabel.Text = value ?? string.Empty;
+            set => DestinationPathLabel.Text = value;
         }
 
         //(элемент интерфейса IPathNode) Зписывает и считывает значение с TextBox элемента Description

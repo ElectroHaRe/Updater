@@ -49,9 +49,9 @@
             this.DescriptionLabel.Location = new System.Drawing.Point(10, 0);
             this.DescriptionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.DescriptionLabel.Name = "DescriptionLabel";
-            this.DescriptionLabel.Size = new System.Drawing.Size(60, 13);
+            this.DescriptionLabel.Size = new System.Drawing.Size(121, 13);
             this.DescriptionLabel.TabIndex = 3;
-            this.DescriptionLabel.Text = "Description";
+            this.DescriptionLabel.Text = "Description \\ Описание";
             // 
             // UpArrow
             // 
@@ -70,7 +70,7 @@
             // 
             // DestinationPathBox
             // 
-            this.DestinationPathBox.Label = "Destination";
+            this.DestinationPathBox.Label = "Destination \\ Директория назначения";
             this.DestinationPathBox.Location = new System.Drawing.Point(0, 84);
             this.DestinationPathBox.Margin = new System.Windows.Forms.Padding(0, 4, 0, 0);
             this.DestinationPathBox.MaximumSize = new System.Drawing.Size(60000, 40);
@@ -82,7 +82,7 @@
             // 
             // SourcePathBox
             // 
-            this.SourcePathBox.Label = "Source";
+            this.SourcePathBox.Label = "Source \\ Копируемая папка";
             this.SourcePathBox.Location = new System.Drawing.Point(0, 40);
             this.SourcePathBox.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.SourcePathBox.MaximumSize = new System.Drawing.Size(60000, 40);
