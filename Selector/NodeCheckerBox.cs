@@ -5,6 +5,7 @@ using System.Windows.Forms;
 
 namespace Updater.Selector
 {
+    //Класс элемента управления, представляющий собой единичный элемент IPathNode с функционалом чека действительности путей
     public partial class NodeCheckerBox : UserControl, IPathNode
     {
         public NodeCheckerBox()
@@ -14,22 +15,23 @@ namespace Updater.Selector
 
         public NodeCheckerBox(string source, string destination, string description) : this()
         {
-            Source = source;
-            Destination = destination;
-            Description = description;
+            this.Source = source;
+            this.Destination = destination;
+            this.Description = description;
         }
 
-        public enum ConnectionStatus : byte { Establiched, Failed, FatalError }
+        public enum ConnectionStatus : byte { Completed, Failed, FatalError }
         public ConnectionStatus State = ConnectionStatus.Failed;
 
+        //Свойство - флаг, обёртка для CheckerBox'a
         public bool Checked
         {
             get => Checker.Checked;
             set => Checker.Checked = value;
         }
 
-        private string _source = string.Empty;
-        private string _destination = string.Empty;
+        private string source = string.Empty;
+        private string destination = string.Empty;
 
         public string Description
         {
@@ -42,39 +44,41 @@ namespace Updater.Selector
         }
         public string Source
         {
-            get => _source;
+            get => source;
             set
             {
-                _source = value;
+                source = value;
                 Check();
             }
         }
         public string Destination
         {
-            get => _destination;
+            get => destination;
             set
             {
-                _destination = value;
+                destination = value;
                 Check();
             }
         }
 
         private void Check()
         {
+            try { new DirectoryInfo(Destination); } catch { ChangeStatus(ConnectionStatus.FatalError); return; }
+
             if (!Directory.Exists(Source))
                 ChangeStatus(ConnectionStatus.FatalError);
             else
             if (!Directory.Exists(Destination))
                 ChangeStatus(ConnectionStatus.Failed);
             else
-                ChangeStatus(ConnectionStatus.Establiched);
+                ChangeStatus(ConnectionStatus.Completed);
         }
 
         private void ChangeStatus(ConnectionStatus status)
         {
             switch (status)
             {
-                case ConnectionStatus.Establiched:
+                case ConnectionStatus.Completed:
                     StatusLabel.Text = "Connection : " + status.ToString();
                     StatusLabel.ForeColor = Color.Green;
                     Checker.Enabled = true;
@@ -94,6 +98,7 @@ namespace Updater.Selector
             }
         }
 
+        //Обработчик события клика по этому элементу управления (Обёртка)
         private void OnClick(object sender, System.EventArgs e)
         {
             if (Checker.Enabled)

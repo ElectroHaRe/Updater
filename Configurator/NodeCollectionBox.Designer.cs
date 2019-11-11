@@ -46,7 +46,7 @@
             this.AddButton.Text = "➕";
             this.AddButton.Click += new System.EventHandler(this.OnAddButtonClick);
             this.AddButton.MouseEnter += new System.EventHandler(this.OnAddButtonMouseEnter);
-            this.AddButton.MouseLeave += new System.EventHandler(this.AddButton_MouseLeave);
+            this.AddButton.MouseLeave += new System.EventHandler(this.OnAddButtonMouseLeave);
             // 
             // VScrollBar
             // 
@@ -67,9 +67,9 @@
             this.RemoveButton.Size = new System.Drawing.Size(26, 19);
             this.RemoveButton.TabIndex = 5;
             this.RemoveButton.Text = "➖";
-            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
-            this.RemoveButton.MouseEnter += new System.EventHandler(this.RemoveButton_MouseEnter);
-            this.RemoveButton.MouseLeave += new System.EventHandler(this.RemoveButton_MouseLeave);
+            this.RemoveButton.Click += new System.EventHandler(this.OnRemoveButtonClick);
+            this.RemoveButton.MouseEnter += new System.EventHandler(this.OnRemoveButtonMouseEnter);
+            this.RemoveButton.MouseLeave += new System.EventHandler(this.OnRemoveButtonMouseLeave);
             // 
             // NodeCollectionBox
             // 

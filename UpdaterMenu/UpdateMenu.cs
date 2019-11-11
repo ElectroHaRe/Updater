@@ -12,7 +12,7 @@ namespace Updater.UpdaterMenu
         public UpdateMenu()
         {
             InitializeComponent();
-            DirectoryExtension.FileCopyComplete += OnFileCopyComplete;
+            DirectoryInfoExtension.FileCopyCompleted += OnFileCopyComplete;
             updater.Tick += OnTick;
             updater.Interval = 10;
         }
@@ -107,7 +107,7 @@ namespace Updater.UpdaterMenu
 
             Parallel.ForEach(nodes, node =>
             {
-                counter += GetFilesCountByDirectoryPath(node.Source);
+                counter = GetFilesCountByDirectoryPath(node.Source);
             });
 
             FilesCount = counter;
@@ -154,7 +154,7 @@ namespace Updater.UpdaterMenu
         private void OnTick(object sender, EventArgs e)
         {
             ProgressBox.Value = counter < ProgressBox.Maximum ? counter : ProgressBox.Maximum;
-            progressLabel.Text = DirectoryExtension.currentFile;
+            progressLabel.Text = DirectoryInfoExtension.CopiedFile;
         }
 
         private void OnButtonClick(object sender, EventArgs e)

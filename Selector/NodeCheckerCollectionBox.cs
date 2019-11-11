@@ -1,10 +1,13 @@
 ﻿using Updater.Base;
-using System.Collections.Generic;
+using System.Collections;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Updater.Selector
 {
-    public partial class NodeCheckerCollectionBox : UserControl
+    //Класс элемента управления, представляющего собой коллекцию элементов IPathNode
+    public partial class NodeCheckerCollectionBox : UserControl, IEnumerable<IPathNode>
     {
         public NodeCheckerCollectionBox()
         {
@@ -13,7 +16,8 @@ namespace Updater.Selector
 
         private List<IPathNode> Nodes = new List<IPathNode>();
 
-        public System.Collections.ObjectModel.ReadOnlyCollection<IPathNode> GetCheckedNodes() 
+        //Возвращает все элементы коллекции Nodes, флаг Checked которых true, в виде коллекции только для чтения параметризированной IPathNode
+        public ReadOnlyCollection<IPathNode> GetCheckedNodes()
         {
             List<IPathNode> temp = new List<IPathNode>();
 
@@ -28,15 +32,20 @@ namespace Updater.Selector
 
         public bool AddPathNode(string sourcePath, string destinationPath, string description)
         {
+            //добавляет новый элемент в коллекцию
             Nodes.Add(new NodeCheckerBox(sourcePath, destinationPath, description));
 
+            //получаем ссылку на новый элемент коллекции
             var newNode = Nodes[Nodes.Count - 1] as Control;
 
+            //Позиционируем элемент
             newNode.Left = newNode.Margin.Left;
             newNode.Width = Width - newNode.Left - newNode.Margin.Right;
-            newNode.Top = Nodes.Count == 1 ? newNode.Margin.Top : (Nodes[Nodes.Count - 2] as Control).Bottom +
-                (Nodes[Nodes.Count - 2] as Control).Margin.Bottom + newNode.Margin.Top;
+            if (Nodes.Count == 1)
+                newNode.Top = newNode.Margin.Top;
+            else newNode.Top = (Nodes[Nodes.Count - 2] as Control).Bottom + (Nodes[Nodes.Count - 2] as Control).Margin.Bottom + newNode.Margin.Top;
 
+            //отоюражаем элемент на элементе управления
             Controls.Add(newNode);
 
             return true;
@@ -62,7 +71,7 @@ namespace Updater.Selector
             return AddPathNodeList(nodes.AsReadOnly());
         }
 
-        private void NodeCheckerCollectionBox_SizeChanged(object sender, System.EventArgs e)
+        private void OnSizeChanged(object sender, System.EventArgs e)
         {
             foreach (Control item in Nodes)
             {
@@ -71,7 +80,7 @@ namespace Updater.Selector
             }
         }
 
-        public void Clear() 
+        public void Clear()
         {
             foreach (Control item in Nodes)
             {
@@ -79,6 +88,16 @@ namespace Updater.Selector
             }
 
             Nodes.Clear();
+        }
+
+        public IEnumerator<IPathNode> GetEnumerator()
+        {
+            return ((IEnumerable<IPathNode>)Nodes).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<IPathNode>)Nodes).GetEnumerator();
         }
     }
 }

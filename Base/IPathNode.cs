@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace Updater.Base
+﻿namespace Updater.Base
 {
     public interface IPathNode
     {

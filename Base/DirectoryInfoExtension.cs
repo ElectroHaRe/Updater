@@ -4,12 +4,16 @@ using System.Threading.Tasks;
 
 namespace Updater.Base
 {
-    static class DirectoryExtension
+    //Класс для расширения функционала класса DirectoryInfo
+    static class DirectoryInfoExtension
     {
-        public static event Action FileCopyComplete;
+        //Событие завершения копирования файла
+        public static event Action FileCopyCompleted;
 
-        public static string currentFile = string.Empty;
+        //Поле для хранения имён копируемых в данный момент файлов
+        public static string CopiedFile = string.Empty;
 
+        //Расширяющий метод Класса DirectoryInfo
         public static void CopyTo(this DirectoryInfo sourceDir, string destinationPath)
         {
             if (!sourceDir.Exists)
@@ -29,9 +33,9 @@ namespace Updater.Base
 
             Parallel.ForEach<FileInfo>(sourceDir.GetFiles(), file =>
             {
-                currentFile = file.Name;
-                file.CopyTo(destinationDir.FullName + @"\" + file.Name);
-                FileCopyComplete?.Invoke();
+                CopiedFile = file.Name;
+                file.CopyTo(Path.Combine(destinationDir.FullName, file.Name));
+                FileCopyCompleted?.Invoke();
             });
         }
     }

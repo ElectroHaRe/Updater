@@ -39,7 +39,7 @@
             this.MinimumSize = new System.Drawing.Size(294, 32);
             this.Name = "NodeCheckerCollectionBox";
             this.Size = new System.Drawing.Size(294, 32);
-            this.SizeChanged += new System.EventHandler(this.NodeCheckerCollectionBox_SizeChanged);
+            this.SizeChanged += new System.EventHandler(this.OnSizeChanged);
             this.ResumeLayout(false);
 
         }

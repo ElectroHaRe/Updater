@@ -34,7 +34,7 @@
             this.SourcePathLabel = new System.Windows.Forms.Label();
             this.DestinationPathLabel = new System.Windows.Forms.Label();
             this.DestinationPathField = new System.Windows.Forms.TextBox();
-            this.DownArrow = new System.Windows.Forms.Label();
+            this.ArrowButton = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // DescriptionLabel
@@ -96,24 +96,24 @@
             // 
             // DownArrow
             // 
-            this.DownArrow.AutoSize = true;
-            this.DownArrow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DownArrow.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.DownArrow.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.DownArrow.Location = new System.Drawing.Point(400, 16);
-            this.DownArrow.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.DownArrow.Name = "DownArrow";
-            this.DownArrow.Size = new System.Drawing.Size(21, 20);
-            this.DownArrow.TabIndex = 8;
-            this.DownArrow.Text = "▼";
-            this.DownArrow.MouseEnter += new System.EventHandler(this.OnDownArrowMouseEnter);
-            this.DownArrow.MouseLeave += new System.EventHandler(this.DownArrow_MouseLeave);
+            this.ArrowButton.AutoSize = true;
+            this.ArrowButton.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ArrowButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ArrowButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ArrowButton.Location = new System.Drawing.Point(400, 16);
+            this.ArrowButton.Margin = new System.Windows.Forms.Padding(0, 0, 3, 0);
+            this.ArrowButton.Name = "DownArrow";
+            this.ArrowButton.Size = new System.Drawing.Size(21, 20);
+            this.ArrowButton.TabIndex = 8;
+            this.ArrowButton.Text = "▼";
+            this.ArrowButton.MouseEnter += new System.EventHandler(this.OnArrowMouseEnter);
+            this.ArrowButton.MouseLeave += new System.EventHandler(this.OnArrowMouseLeave);
             // 
             // NodePreviewBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.DownArrow);
+            this.Controls.Add(this.ArrowButton);
             this.Controls.Add(this.DestinationPathLabel);
             this.Controls.Add(this.DestinationPathField);
             this.Controls.Add(this.SourcePathLabel);
@@ -139,6 +139,6 @@
         private System.Windows.Forms.Label SourcePathLabel;
         private System.Windows.Forms.Label DestinationPathLabel;
         private System.Windows.Forms.TextBox DestinationPathField;
-        private System.Windows.Forms.Label DownArrow;
+        private System.Windows.Forms.Label ArrowButton;
     }
 }

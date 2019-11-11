@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Updater.Selector
 {
+    //Элемент управления, представляющий собой меню пользовательского выбора нужных IPathNode
     public partial class SelectionMenu : UserControl
     {
         public SelectionMenu()
@@ -59,13 +55,13 @@ namespace Updater.Selector
             nodeCheckerCollection.AddPathNodeList(nodes);
         }
 
-        public void SetPathNodeList<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> nodes) where T : Base.IPathNode
+        public void SetPathNodeList<T>(ReadOnlyCollection<T> nodes) where T : Base.IPathNode
         {
             nodeCheckerCollection.Clear();
             nodeCheckerCollection.AddPathNodeList(nodes);
         }
 
-        public System.Collections.ObjectModel.ReadOnlyCollection<Base.IPathNode> GetCheckedNodes() 
+        public ReadOnlyCollection<Base.IPathNode> GetCheckedNodes() 
         {
             return nodeCheckerCollection.GetCheckedNodes();
         }

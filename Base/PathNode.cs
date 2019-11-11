@@ -1,29 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Updater.Base
+﻿namespace Updater.Base
 {
     public class PathNode : IPathNode
     {
-        public PathNode() { }
-
+        //Конструктор с инициализацией полей
         public PathNode(string description, string source, string destination)
         {
-            _description = description;
-            _destination = destination;
-            _source = source;
+            this.description = description;
+            this.destination = destination;
+            this.source = source;
         }
 
-        private string _description = string.Empty;
-        public string Description { get => _description; set => _description = value; }
+        private string description = string.Empty;
+        private string source = string.Empty;
+        private string destination = string.Empty;
 
-        private string _source = string.Empty;
-        public string Source { get => _source; set => _source = value; }
-
-        private string _destination = string.Empty;
-        public string Destination { get => _destination; set => _destination = value; }
+        public string Description { get => description; set => description = value; }
+        public string Source { get => source; set => source = value; }
+        public string Destination { get => destination; set => destination = value; }
     }
 }
