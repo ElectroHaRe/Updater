@@ -53,7 +53,7 @@ namespace Updater.Configurator
 
             foreach (IPathNode item in nodeCollectionBox)
             {
-                //Таким образом мы отсекаем все повторяющиеся элементы
+                //Таким образом мы отсекаем все пустые элементы
                 if (item.Source == string.Empty && item.Description == string.Empty && item.Destination == string.Empty)
                     continue;
 

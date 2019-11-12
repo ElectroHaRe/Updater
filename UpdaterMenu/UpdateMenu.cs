@@ -4,6 +4,8 @@ using Updater.Base;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections.ObjectModel;
+using System.Text;
 
 namespace Updater.UpdaterMenu
 {
@@ -13,14 +15,14 @@ namespace Updater.UpdaterMenu
         public UpdateMenu()
         {
             InitializeComponent();
-            DirectoryInfoExtension.FileCopyCompleted += OnFileCopyComplete;
+            DirectoryInfoExtension.FileCopyCompleted += OnFileCopyCompleted;
             updater.Tick += OnTick;
             updater.Interval = 10;
         }
 
         //Переменая, хранящая значение полного количесва файлов в source дирректориях
-        private int FilesCount = 0;
-        
+        private int filesCount = 0;
+
         //переменная, хранящая значение текущего количества скопированных файлов
         private int counter = 0;
 
@@ -61,7 +63,7 @@ namespace Updater.UpdaterMenu
             FindForm().ControlBox = true;
 
             //записываем количество файлов
-            ProgressBox.Maximum = FilesCount;
+            ProgressBox.Maximum = filesCount;
 
             //запускаем таймер для обновления значений прогресс бара
             updater.Start();
@@ -80,13 +82,7 @@ namespace Updater.UpdaterMenu
             BackButton.Enabled = ExitButton.Enabled = true;
         }
 
-        //Функция задания листа IPathNode
-        public void SetPathNodeList<T>(List<T> nodes) where T : IPathNode
-        {
-            SetPathNodeList(nodes.AsReadOnly());
-        }
-
-        public void SetPathNodeList<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> nodes) where T : IPathNode
+        public void SetPathNodeList<T>(ReadOnlyCollection<T> nodes) where T : IPathNode
         {
             foreach (var item in nodes)
             {
@@ -94,17 +90,11 @@ namespace Updater.UpdaterMenu
             }
         }
 
-        //Функция добавления одного IPathNode
-        public void AddPathNode<T>(T node) where T : IPathNode
-        {
-            nodes.Add(node);
-        }
-
         //Функция сброса самого элемента управления
         public void Clear()
         {
             nodes.Clear();
-            FilesCount = counter = 0;
+            filesCount = counter = 0;
             ProgressBox.Value = 0;
             ProgressBox.Maximum = 100;
         }
@@ -142,14 +132,15 @@ namespace Updater.UpdaterMenu
                 counter = GetFilesCountByDirectoryPath(node.Source);
             });
 
-            FilesCount = counter;
+            filesCount = counter;
         }
 
         //Ищет папки с именем Source  в папке Destination и, если находит, запихивает их в резервную папку
         private void ResolveConflictsForNodes()
         {
+
             string dateTime = DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + "_" +
-                DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+            DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
 
             foreach (IPathNode node in nodes)
             {
@@ -172,8 +163,6 @@ namespace Updater.UpdaterMenu
         //Метод логики самого копирования
         private void StartCopy()
         {
-            ResolveConflictsForNodes();
-
             Parallel.ForEach(nodes, node =>
             {
                 (new DirectoryInfo(node.Source)).CopyTo(node.Destination);
@@ -181,7 +170,7 @@ namespace Updater.UpdaterMenu
         }
 
         //Обработчик события завершения копирования файла
-        private void OnFileCopyComplete()
+        private void OnFileCopyCompleted()
         {
             counter++;
         }

@@ -14,6 +14,12 @@ namespace Updater.Selector
             InitializeComponent();
         }
 
+        public event EventHandler OnCheckerChanged
+        {
+            add => nodeCheckerCollection.OnCheckerChanged += value;
+            remove => nodeCheckerCollection.OnCheckerChanged -= value;
+        }
+
         //Свойство - обёртка для текста левой кнопки
         public string LeftButtonText 
         {
@@ -59,8 +65,7 @@ namespace Updater.Selector
         //Generic метод задания листа IPathNode
         public void SetPathNodeList<T>(List<T> nodes) where T : Base.IPathNode
         {
-            nodeCheckerCollection.Clear();
-            nodeCheckerCollection.AddPathNodeList(nodes);
+            SetPathNodeList(nodes.AsReadOnly());
         }
 
         //Generic метод задания листа IPathNode через ReadOnlyCollection
@@ -74,6 +79,24 @@ namespace Updater.Selector
         public ReadOnlyCollection<IPathNode> GetCheckedNodes() 
         {
             return nodeCheckerCollection.GetCheckedNodes();
+        }
+
+        public bool LeftButtonIsActive
+        {
+            get => LeftButton.Enabled;
+            set => LeftButton.Enabled = value;
+        }
+
+        public bool MiddleButtonIsActive
+        {
+            get => MiddleButton.Enabled;
+            set => MiddleButton.Enabled = value;
+        }
+
+        public bool RightButtonIsActive
+        {
+            get => RightButton.Enabled;
+            set => RightButton.Enabled = value;
         }
 
         //Метод обработчик события изменения размера элемента управления

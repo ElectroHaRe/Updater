@@ -49,14 +49,18 @@
             // selectionMenu
             // 
             this.selectionMenu.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.selectionMenu.LeftButtonIsActive = true;
             this.selectionMenu.LeftButtonText = "Update";
             this.selectionMenu.Location = new System.Drawing.Point(0, 0);
+            this.selectionMenu.MiddleButtonIsActive = true;
             this.selectionMenu.MiddleButtonText = "Config";
             this.selectionMenu.MinimumSize = new System.Drawing.Size(302, 70);
             this.selectionMenu.Name = "selectionMenu";
+            this.selectionMenu.RightButtonIsActive = true;
             this.selectionMenu.RightButtonText = "Exit";
             this.selectionMenu.Size = new System.Drawing.Size(600, 400);
             this.selectionMenu.TabIndex = 3;
+            this.selectionMenu.OnCheckerChanged += new System.EventHandler(this.OnCheckerChanged);
             this.selectionMenu.OnLeftButtonClick += new System.EventHandler(this.OnUpdateClick);
             this.selectionMenu.MiddleButtonClick += new System.EventHandler(this.OnConfigClick);
             this.selectionMenu.RightButtonClick += new System.EventHandler(this.OnExitClick);
