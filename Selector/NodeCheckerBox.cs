@@ -2,6 +2,7 @@
 using Updater.Base;
 using System.Drawing;
 using System.Windows.Forms;
+using System;
 
 namespace Updater.Selector
 {
@@ -21,17 +22,20 @@ namespace Updater.Selector
         }
 
         public enum ConnectionStatus : byte { Completed, Failed, FatalError }
-        public ConnectionStatus State = ConnectionStatus.Failed;
+        public ConnectionStatus Status = ConnectionStatus.Failed;
+
+        private string source = string.Empty;
+        private string destination = string.Empty;
+
+        public event EventHandler CheckedChanged;
+
 
         //Свойство - флаг, обёртка для CheckerBox'a
         public bool Checked
         {
             get => Checker.Checked;
             set => Checker.Checked = value;
-        }
-
-        private string source = string.Empty;
-        private string destination = string.Empty;
+        }      
 
         public string Description
         {
@@ -96,13 +100,24 @@ namespace Updater.Selector
                 default:
                     break;
             }
+
+            this.Status = status;
         }
 
         //Обработчик события клика по этому элементу управления (Обёртка)
-        private void OnClick(object sender, System.EventArgs e)
+        private void OnClickHandler(object sender, EventArgs e)
         {
             if (Checker.Enabled)
+            {
                 Checker.Checked = !Checker.Checked;
+                this.CheckedChanged?.Invoke(this,e);
+            }
+                
+        }
+
+        private void OnCheckerClick(object sender, EventArgs e)
+        {
+            this.CheckedChanged?.Invoke(this, e);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Updater.Base;
+using Updater.Selector;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -13,7 +14,10 @@ namespace Updater
             InitializeComponent();
             UpdateNodes();
             ActivateMenu(Menu.selection);
+            selectionMenu.LeftButtonIsActive = false;
         }
+                
+        private List<NodeCheckerBox> checkedBoxes = new List<NodeCheckerBox>();
 
         //перечисление возможных меню
         private enum Menu : byte { selection, config, update }
@@ -27,6 +31,8 @@ namespace Updater
         private void UpdateNodes()
         {
             nodes = PathNodeSerializer.Load(ConfigFilePath);
+            selectionMenu.LeftButtonIsActive = false;
+            checkedBoxes.Clear();
         }
 
         //Активирует выбранное меню
@@ -52,8 +58,6 @@ namespace Updater
                     updateMenu.SetPathNodeList(selectionMenu.GetCheckedNodes());
                     updateMenu.Show();
                     updateMenu.Start();
-                    break;
-                default:
                     break;
             }
         }
@@ -81,7 +85,7 @@ namespace Updater
         //Обработчик события нажатия кнопки Save
         private void OnSaveClick(object sender, EventArgs e)
         {
-            Base.PathNodeSerializer.Save(configMenu.GetPathNodeList(), ConfigFilePath);
+            PathNodeSerializer.Save(configMenu.GetPathNodeList(), ConfigFilePath);
             OnBackClick(null, null);
         }
 
@@ -95,6 +99,18 @@ namespace Updater
         private void OnSizeChanged(object sender, EventArgs e)
         {
             updateMenu.Width = Width;
+        }
+
+        private void OnCheckerChanged(object sender, EventArgs e)
+        {
+            var temp = sender as NodeCheckerBox;
+
+            if (temp.Checked)
+                checkedBoxes.Add(temp);
+            else
+                checkedBoxes.Remove(temp);
+
+            selectionMenu.LeftButtonIsActive = checkedBoxes.Count > 0 ? true : false;
         }
     }
 }

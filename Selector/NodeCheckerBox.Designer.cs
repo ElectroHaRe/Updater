@@ -41,6 +41,7 @@
             this.Checker.TabIndex = 0;
             this.Checker.Text = "checkBox1";
             this.Checker.UseVisualStyleBackColor = true;
+            this.Checker.Click += new System.EventHandler(this.OnCheckerClick);
             // 
             // StatusLabel
             // 
@@ -52,7 +53,7 @@
             this.StatusLabel.Size = new System.Drawing.Size(35, 13);
             this.StatusLabel.TabIndex = 1;
             this.StatusLabel.Text = "label1";
-            this.StatusLabel.Click += new System.EventHandler(this.OnClick);
+            this.StatusLabel.Click += new System.EventHandler(this.OnClickHandler);
             // 
             // NodeCheckerBox
             // 
@@ -65,7 +66,7 @@
             this.MinimumSize = new System.Drawing.Size(200, 22);
             this.Name = "NodeCheckerBox";
             this.Size = new System.Drawing.Size(248, 20);
-            this.Click += new System.EventHandler(this.OnClick);
+            this.Click += new System.EventHandler(this.OnClickHandler);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -194,12 +194,7 @@ namespace Updater.Configurator
         public void AddPathNode(IPathNode pathNode)
         {
             AddPathNode(pathNode.Source, pathNode.Destination, pathNode.Description);
-        }
-
-        public void AddPathNodeList<T>(List<T> nodes) where T : IPathNode
-        {
-            AddPathNodeList(nodes.AsReadOnly());
-        }
+        } 
 
         public void AddPathNodeList<T>(ReadOnlyCollection<T> nodes) where T : IPathNode
         {

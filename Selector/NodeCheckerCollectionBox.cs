@@ -3,6 +3,7 @@ using System.Collections;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System;
 
 namespace Updater.Selector
 {
@@ -13,6 +14,8 @@ namespace Updater.Selector
         {
             InitializeComponent();
         }
+
+        public event EventHandler OnCheckerChanged;
 
         private List<IPathNode> Nodes = new List<IPathNode>();
 
@@ -45,7 +48,9 @@ namespace Updater.Selector
                 newNode.Top = newNode.Margin.Top;
             else newNode.Top = (Nodes[Nodes.Count - 2] as Control).Bottom + (Nodes[Nodes.Count - 2] as Control).Margin.Bottom + newNode.Margin.Top;
 
-            //отоюражаем элемент на элементе управления
+            (newNode as NodeCheckerBox).CheckedChanged += OnCheckerChanged;
+
+            //отображаем элемент на элементе управления
             Controls.Add(newNode);
 
             return true;
@@ -56,7 +61,7 @@ namespace Updater.Selector
             return AddPathNode(pathNode.Source, pathNode.Destination, pathNode.Description);
         }
 
-        public bool AddPathNodeList<T>(System.Collections.ObjectModel.ReadOnlyCollection<T> nodes) where T : IPathNode
+        public bool AddPathNodeList<T>(ReadOnlyCollection<T> nodes) where T : IPathNode
         {
             foreach (var item in nodes)
             {
@@ -64,11 +69,6 @@ namespace Updater.Selector
             }
 
             return true;
-        }
-
-        public bool AddPathNodeList<T>(List<T> nodes) where T : IPathNode
-        {
-            return AddPathNodeList(nodes.AsReadOnly());
         }
 
         private void OnSizeChanged(object sender, System.EventArgs e)
