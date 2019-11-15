@@ -1,6 +1,4 @@
-﻿using System;
-using Updater.Base;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace Updater
 {

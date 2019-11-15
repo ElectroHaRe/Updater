@@ -61,6 +61,23 @@ namespace Updater.Selector
             add => RightButton.Click += value;
             remove => RightButton.Click -= value;
         }
+        public bool LeftButtonIsActive
+        {
+            get => LeftButton.Enabled;
+            set => LeftButton.Enabled = value;
+        }
+
+        public bool MiddleButtonIsActive
+        {
+            get => MiddleButton.Enabled;
+            set => MiddleButton.Enabled = value;
+        }
+
+        public bool RightButtonIsActive
+        {
+            get => RightButton.Enabled;
+            set => RightButton.Enabled = value;
+        }
 
         //Generic метод задания листа IPathNode
         public void SetPathNodeList<T>(List<T> nodes) where T : Base.IPathNode
@@ -79,24 +96,6 @@ namespace Updater.Selector
         public ReadOnlyCollection<IPathNode> GetCheckedNodes() 
         {
             return nodeCheckerCollection.GetCheckedNodes();
-        }
-
-        public bool LeftButtonIsActive
-        {
-            get => LeftButton.Enabled;
-            set => LeftButton.Enabled = value;
-        }
-
-        public bool MiddleButtonIsActive
-        {
-            get => MiddleButton.Enabled;
-            set => MiddleButton.Enabled = value;
-        }
-
-        public bool RightButtonIsActive
-        {
-            get => RightButton.Enabled;
-            set => RightButton.Enabled = value;
         }
 
         //Метод обработчик события изменения размера элемента управления

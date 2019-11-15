@@ -22,7 +22,7 @@ namespace Updater.Configurator
         //Функция удаления элемента из списка Nodes (Удаление происходит иcходя из равенства возвращаемых значений Description, Destination, Source)
         public bool RemoveNode(IPathNode node)
         {
-            var index = Nodes.FindIndex(item => item.Description == node.Description && item.Destination == node.Destination && item.Source == node.Source);
+            var index = Nodes.IndexOf(node);
 
             if (index == -1)
                 return false;
@@ -140,7 +140,7 @@ namespace Updater.Configurator
                 throw new ArgumentException("PathNode controls must be compatible with the IPathNode type.");
 
             //Находим индекс элемента, коответствующего передаваемому
-            int index = Nodes.FindIndex(item => pathNode.Description == item.Description && pathNode.Destination == item.Destination && pathNode.Source == item.Source);
+            int index = Nodes.IndexOf(pathNode);
 
             //Если PathNode не найдена, то выбрасываем исключение
             if (index == -1)
@@ -194,7 +194,7 @@ namespace Updater.Configurator
         public void AddPathNode(IPathNode pathNode)
         {
             AddPathNode(pathNode.Source, pathNode.Destination, pathNode.Description);
-        } 
+        }
 
         public void AddPathNodeList<T>(ReadOnlyCollection<T> nodes) where T : IPathNode
         {

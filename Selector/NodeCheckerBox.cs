@@ -29,13 +29,12 @@ namespace Updater.Selector
 
         public event EventHandler CheckedChanged;
 
-
         //Свойство - флаг, обёртка для CheckerBox'a
         public bool Checked
         {
             get => Checker.Checked;
             set => Checker.Checked = value;
-        }      
+        }
 
         public string Description
         {
@@ -46,6 +45,7 @@ namespace Updater.Selector
                 StatusLabel.Left = Checker.Right + Checker.Margin.Right + StatusLabel.Margin.Left;
             }
         }
+
         public string Source
         {
             get => source;
@@ -55,6 +55,7 @@ namespace Updater.Selector
                 Check();
             }
         }
+
         public string Destination
         {
             get => destination;
@@ -110,9 +111,8 @@ namespace Updater.Selector
             if (Checker.Enabled)
             {
                 Checker.Checked = !Checker.Checked;
-                this.CheckedChanged?.Invoke(this,e);
+                this.CheckedChanged?.Invoke(this, e);
             }
-                
         }
 
         private void OnCheckerClick(object sender, EventArgs e)

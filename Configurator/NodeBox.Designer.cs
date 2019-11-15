@@ -30,7 +30,7 @@
         {
             this.DescriptionField = new System.Windows.Forms.TextBox();
             this.DescriptionLabel = new System.Windows.Forms.Label();
-            this.UpArrow = new System.Windows.Forms.Label();
+            this.Arrow = new System.Windows.Forms.Label();
             this.DestinationPathBox = new Updater.Configurator.PathBox();
             this.SourcePathBox = new Updater.Configurator.PathBox();
             this.SuspendLayout();
@@ -55,18 +55,18 @@
             // 
             // UpArrow
             // 
-            this.UpArrow.AutoSize = true;
-            this.UpArrow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.UpArrow.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.UpArrow.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.UpArrow.Location = new System.Drawing.Point(269, 17);
-            this.UpArrow.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
-            this.UpArrow.Name = "UpArrow";
-            this.UpArrow.Size = new System.Drawing.Size(21, 20);
-            this.UpArrow.TabIndex = 9;
-            this.UpArrow.Text = "▲";
-            this.UpArrow.MouseEnter += new System.EventHandler(this.OnUpArrowMouseEnter);
-            this.UpArrow.MouseLeave += new System.EventHandler(this.OnUpArrowMouseLeave);
+            this.Arrow.AutoSize = true;
+            this.Arrow.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Arrow.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.Arrow.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Arrow.Location = new System.Drawing.Point(269, 17);
+            this.Arrow.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
+            this.Arrow.Name = "UpArrow";
+            this.Arrow.Size = new System.Drawing.Size(21, 20);
+            this.Arrow.TabIndex = 9;
+            this.Arrow.Text = "▲";
+            this.Arrow.MouseEnter += new System.EventHandler(this.OnUpArrowMouseEnter);
+            this.Arrow.MouseLeave += new System.EventHandler(this.OnUpArrowMouseLeave);
             // 
             // DestinationPathBox
             // 
@@ -98,7 +98,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.DestinationPathBox);
             this.Controls.Add(this.SourcePathBox);
-            this.Controls.Add(this.UpArrow);
+            this.Controls.Add(this.Arrow);
             this.Controls.Add(this.DescriptionLabel);
             this.Controls.Add(this.DescriptionField);
             this.Margin = new System.Windows.Forms.Padding(22, 4, 22, 4);
@@ -115,7 +115,7 @@
         #endregion
         private System.Windows.Forms.TextBox DescriptionField;
         private System.Windows.Forms.Label DescriptionLabel;
-        private System.Windows.Forms.Label UpArrow;
+        private System.Windows.Forms.Label Arrow;
         private PathBox SourcePathBox;
         private PathBox DestinationPathBox;
     }

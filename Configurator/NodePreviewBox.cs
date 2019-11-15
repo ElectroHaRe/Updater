@@ -15,8 +15,8 @@ namespace Updater.Configurator
         //Событие клика по кнопке со стрелочкой
         public event EventHandler ArrowClick
         {
-            add => ArrowButton.Click += value;
-            remove => ArrowButton.Click -= value;
+            add => Arrow.Click += value;
+            remove => Arrow.Click -= value;
         }
 
         //Свойство - обёртка, предоставляющее доступ к Лэйблу TextBox'a Description
@@ -65,10 +65,10 @@ namespace Updater.Configurator
         private void OnSizeChanged(object sender, EventArgs e)
         {
             // позиция стрелочки вниз отсчитывается от правого края контрола по правому отступу самой стрелочки
-            ArrowButton.Left = Width - ArrowButton.Width - ArrowButton.Margin.Right;
+            Arrow.Left = Width - Arrow.Width - Arrow.Margin.Right;
 
             // ширина элемента управления без промежутков между полями Description, Source и Destination (также вычитается позиция Description)
-            var tempWidth = ArrowButton.Left - DestinationPathField.Margin.Right - 
+            var tempWidth = Arrow.Left - DestinationPathField.Margin.Right - 
                 SourcePathField.Margin.Right - DescriptionField.Margin.Right - DescriptionField.Margin.Left;
 
             // ширина текст боксов и лэйблов одинакова. Ширину каждого элемента считаем в порядке слева направо
@@ -85,13 +85,13 @@ namespace Updater.Configurator
         //Обработчик события наведения мыши на 'кнопку' со стрелочкой
         private void OnArrowMouseEnter(object sender, EventArgs e)
         {
-            ArrowButton.BorderStyle = BorderStyle.Fixed3D;
+            Arrow.BorderStyle = BorderStyle.Fixed3D;
         }
 
         //Обработчик события снятия курсора мыши с 'кнопки' со стрелочкой
         private void OnArrowMouseLeave(object sender, EventArgs e)
         {
-            ArrowButton.BorderStyle = BorderStyle.FixedSingle;
+            Arrow.BorderStyle = BorderStyle.FixedSingle;
         }
     }
 }
