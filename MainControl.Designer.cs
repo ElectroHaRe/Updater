@@ -28,23 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.updateMenu = new Updater.UpdaterMenu.UpdateMenu();
             this.selectionMenu = new Updater.Selector.SelectionMenu();
             this.configMenu = new Updater.Configurator.ConfiguratorMenu();
+            this.updateMenu = new Updater.UpdaterMenu.UpdateMenu();
             this.SuspendLayout();
-            // 
-            // updateMenu
-            // 
-            this.updateMenu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.updateMenu.Location = new System.Drawing.Point(0, 0);
-            this.updateMenu.Margin = new System.Windows.Forms.Padding(0);
-            this.updateMenu.MaximumSize = new System.Drawing.Size(60000, 74);
-            this.updateMenu.MinimumSize = new System.Drawing.Size(180, 74);
-            this.updateMenu.Name = "updateMenu";
-            this.updateMenu.Size = new System.Drawing.Size(600, 74);
-            this.updateMenu.TabIndex = 4;
-            this.updateMenu.OnBackClick += new System.EventHandler(this.OnBackClick);
-            this.updateMenu.OnExitClick += new System.EventHandler(this.OnExitClick);
             // 
             // selectionMenu
             // 
@@ -76,6 +63,18 @@
             this.configMenu.TabIndex = 0;
             this.configMenu.OnSaveClick += new System.EventHandler(this.OnSaveClick);
             this.configMenu.OnBackClick += new System.EventHandler(this.OnBackClick);
+            // 
+            // updateMenu
+            // 
+            this.updateMenu.Dock = System.Windows.Forms.DockStyle.Top;
+            this.updateMenu.Location = new System.Drawing.Point(0, 0);
+            this.updateMenu.MaximumSize = new System.Drawing.Size(60000, 74);
+            this.updateMenu.MinimumSize = new System.Drawing.Size(180, 74);
+            this.updateMenu.Name = "updateMenu";
+            this.updateMenu.Size = new System.Drawing.Size(600, 74);
+            this.updateMenu.TabIndex = 4;
+            this.updateMenu.BackClick += new System.EventHandler(this.OnBackClick);
+            this.updateMenu.ExitClick += new System.EventHandler(this.OnExitClick);
             // 
             // MainControl
             // 

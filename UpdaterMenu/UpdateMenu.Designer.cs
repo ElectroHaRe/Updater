@@ -38,6 +38,7 @@
             // 
             this.ProgressBox.Location = new System.Drawing.Point(4, 17);
             this.ProgressBox.Margin = new System.Windows.Forms.Padding(4);
+            this.ProgressBox.Maximum = 1000;
             this.ProgressBox.Name = "ProgressBox";
             this.ProgressBox.Size = new System.Drawing.Size(474, 23);
             this.ProgressBox.TabIndex = 0;
